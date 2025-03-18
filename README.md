@@ -65,3 +65,38 @@ Libraries & Frameworks: Pandas, PySpark, GeoPandas, Folium, Matplotlib, Seaborn,
 Big Data Tools: Apache Spark, Spark SQL
 
 Geospatial Mapping: OpenStreetMap, Leaflet.js
+
+
+
+## Notebook Update Log – Shortest Path Trip Connection
+
+### New Features & Enhancements:
+
+#### Road Network Graph Construction:
+
+Loaded road data from road_data.csv and preprocessed the geometry by replacing semicolons with commas.
+Built an undirected road network graph using NetworkX by adding edges between road segments (using the dnroad field) with the road length as the edge weight.
+Enhancement: This graph structure now allows efficient route computations between segments.
+
+#### Shortest Path Algorithm Integration:
+
+Introduced a function (find_shortest_path) that leverages Dijkstra’s algorithm (via NetworkX) to compute the shortest path between two given road segments.
+New Capability: Enables connecting non-adjacent segments when direct road continuity isn’t available.
+
+#### Trip Grouping & Road Segment Connection:
+
+Continued to load and process vehicle trajectory data (veh1_data.csv) by converting time stamps, sorting chronologically, and grouping trips based on a 10-minute time gap.
+Developed the connect_road_segments function that iterates through each trip group and, if two consecutive road segments are not directly connected, uses the shortest path function to bridge the gap.
+Outcome: Each trip is now enhanced with the computed shortest paths to form a continuous trajectory.
+
+#### Map Visualization Enhancements:
+
+Used Folium for interactive mapping:
+Displayed each group with a gradient color scheme created via matplotlib’s color maps, helping to visually distinguish trips.
+Added start and end markers (CircleMarkers) for each group along with popup tooltips to indicate group information.
+Incorporated a helper function (linestring_to_geojson) to convert LINESTRING data (WKT) to GeoJSON for consistent mapping.
+
+#### New Dependencies and Libraries:
+
+Added support for NetworkX (graph operations), geopy (for potential distance calculations), matplotlib.colors (to generate custom color gradients), and numpy (for numerical operations).
+These additions enable more advanced spatial analysis and visualization of the road and vehicle data.
